@@ -337,8 +337,8 @@ For example:
 
 ``` r
 data("DSA_test_smallData")
-res.split = dataSplit(DSA_data_small,list(sel.alg = "MDUPLEX",writeFile = FALSE))
-res.auc = getAUC(res_split$Train,res_split$Validation)
+res.split = dataSplit(DSA_test_smallData,list(sel.alg = "MDUPLEX",writeFile = FALSE))
+res.auc = getAUC(res.split$Train,res.split$Validation)
 ```
 
 In the above example, the value range of `res.auc` is \[0,1\], and the

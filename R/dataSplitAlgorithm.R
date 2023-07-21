@@ -9,24 +9,24 @@
 #' @param prop.Ts The proportion of data allocated to the test subset, where the default is 0.2.
 #' @param Train A string variable representing the output file name for the training data subset. The default is "Train.txt".
 #' @param Test A string variable representing the output file name for the test data subset. The default is "Test.txt".
-#' @param Validation A string variable representing the output file name for the validation data subst. The default is "Valid.txt".
+#' @param Validation A string variable representing the output file name for the validation data subset. The default is "Valid.txt".
 #' @param loc.calib Vector type: When sel.alg = "timeCon", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is c(0,0.6), implying that the algorithm selects the first 60% of the data from the original dataset.
-#' @param writeFile Boolean variable that determines whether the data subsets need to be output or not. The default is TRUE.
+#' @param writeFile Boolean variable that determines whether the data subsets need to be output or not. The default is FALSE.
 #'
 #' @return None
 #'
 par.default <- function(){
   list(
-    include.inp = TRUE, #Whether the input vector is included when calculating Euclidean distance between samples.
-    seed = 1000, # Seed number.
-    sel.alg = "MDUPLEX", # Algorithm selection, default is MDUPLEX.
-    prop.Tr = 0.6, # The proportion of data allocated to the training set, which defaults to 0.6.
-    prop.Ts = 0.2, # The proportion of data allocated to the test set, which defaults to 0.2.
-    Train = "Train.txt", # The name of the training set when the output file is required, which defaults to "Train.txt".
-    Test = "Test.txt", # The name of the test set when the output file is required, which defaults to "Test.txt".
-    Validation = "Valid.txt", # The name of the validation set when the output file is required, which defaults to "Valid.txt".
-    loc.calib = c(0,0.6), # If you use a simple continuous time series data partition, you can also specify the location of the partition segment.
-    writeFile = TRUE
+    include.inp = TRUE,
+    seed = 1000,
+    sel.alg = "MDUPLEX",
+    prop.Tr = 0.6,
+    prop.Ts = 0.2,
+    Train = "Train.txt",
+    Test = "Test.txt",
+    Validation = "Valid.txt",
+    loc.calib = c(0,0.6),
+    writeFile = FALSE
   )
 }
 
@@ -294,7 +294,7 @@ timeCon <- function(data, control){
     )
 
   return(list(Calibration = data[start.point:end.point,],
-              Evaluation = data[-(start.point:end.point),]))
+              Validation = data[-(start.point:end.point),]))
 }
 
 
@@ -721,13 +721,13 @@ SOMPLEX <- function(data, control){
 #'
 #' @examples
 #' data("DSA_test_smallData")
-#' result = dataSplit(DSA_test_smallData, list(sel.alg = "MDUPLEX",writeFile = FALSE))
+#' result = dataSplit(DSA_test_smallData)
 #'
 #' data("DSA_test_modData")
-#' result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P",writeFile = FALSE))
+#' result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P"))
 #'
 #' data("DSA_test_largeData")
-#' result = dataSplit(DSA_test_largeData, list(sel.alg = "SOMPLEX",writeFile = FALSE))
+#' result = dataSplit(DSA_test_largeData, list(sel.alg = "SOMPLEX"))
 #'
 dataSplit <- function(data,control = list(),...){
   # Check data format
@@ -766,7 +766,7 @@ dataSplit <- function(data,control = list(),...){
       write.table(obj$Validation,control$Validation,row.names = F,col.names = T,sep='\t')
     }else{
       write.table(obj$Calibration,"Calibration.txt",row.names = F,col.names = T,sep='\t')
-      write.table(obj$Evaluation,"Evaluation.txt",row.names = F,col.names = T,sep='\t')
+      write.table(obj$Validation,"Validation.txt",row.names = F,col.names = T,sep='\t')
     }
   }
   return(obj)

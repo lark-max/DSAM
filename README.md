@@ -65,34 +65,34 @@ provided in the package, which is shown as below:
 
 ``` r
 `include.inp`   
-Whether the input vector is included when calculating Euclidean distance between samples, which defaults to TRUE
+Boolean variable that determines whether the input vectors should be included during the Euclidean distance calculation. The default is TRUE.
 
 `seed`  
-Seed number, which defaults to 1000
+Random number seed. The default is 1000.
 
 `sel.alg`   
-Algorithm selection, includes SOMPLEX, MDUPLEX, DUPLEX, SBSS.P, TC, which defaults to "MDUPLEX"
+A string variable that represents the available data splitting algorithms including "SOMPLEX", "MDUPLEX", "DUPLEX", "SBSS.P", "SS" and "timeCon". The default is "MDUPLEX".
 
 `prop.Tr`   
-The proportion of data allocated to the training set, which defaults to 0.6
+The proportion of data allocated to the training subset, where the default is 0.6.
 
 `prop.Ts`   
-The proportion of data allocated to the test set, which defaults to 0.2
+The proportion of data allocated to the test subset, where the default is 0.2.
 
 `Train` 
-The name of the training set when the output file is required, which defaults to "Train.txt"
+A string variable representing the output file name for the training data subset. The default is "Train.txt".
 
 `Test`  
-The name of the test set when the output file is required, which defaults to "Test.txt"
+A string variable representing the output file name for the test data subset. The default is "Test.txt".
 
 `Validation`    
-The name of the validation set when the output file is required, which defaults to "Valid.txt"
+A string variable representing the output file name for the validation data subset. The default is "Valid.txt".
 
 `loc.calib` 
-If using the TC algorithm, you can also specify the location of the splitting range, which defaults to c(0,0.6)
+Vector type: When sel.alg = "timeCon", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is c(0,0.6), implying that the algorithm selects the first 60% of the data from the original dataset.
 
 `writeFile` 
-Whether to output the partition result to a txt file, which defaults to TRUE
+Boolean variable that determines whether the data subsets need to be output or not. The default is FALSE.
 ```
 
 ## Example
@@ -104,7 +104,7 @@ client.
 library(DSA)
 ## basic example code
 data("DSA_test_smallData")
-result = dataSplit(DSA_test_smallData, list(sel.alg = "MDUPLEX",writeFile = FALSE))
+result = dataSplit(DSA_test_smallData)
 #> [1] "Start the initial sampling..."
 #> [1] "Initial sampling successfully!"
 #> [1] "Start the loop sampling..."
@@ -131,7 +131,7 @@ result = dataSplit(DSA_test_smallData, list(sel.alg = "MDUPLEX",writeFile = FALS
 #> [1] "MDUPLEX sampling complete!"
 
 data("DSA_test_modData")
-result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P",writeFile = FALSE))
+result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P"))
 #> [1] "Total neuron: 60"
 #> [1] "sampling on neuron: 1"
 #> [1] "sampling on neuron: 2"
@@ -196,7 +196,7 @@ result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P",writeFile = FALSE))
 #> [1] "SBSS-P sampling complete!"
 
 data("DSA_test_largeData")
-result = dataSplit(DSA_test_largeData, list(sel.alg = "SOMPLEX",writeFile = FALSE))
+result = dataSplit(DSA_test_largeData, list(sel.alg = "SOMPLEX"))
 #> [1] "Total neuron: 126"
 #> [1] "sampling on neuron: 1"
 #> [1] "sampling on neuron: 2"
@@ -337,8 +337,8 @@ For example:
 
 ``` r
 data("DSA_test_smallData")
-res.split = dataSplit(DSA_test_smallData,list(sel.alg = "MDUPLEX",writeFile = FALSE))
-res.auc = getAUC(res.split$Train,res.split$Validation)
+res.split = dataSplit(DSA_test_largeData,list(sel.alg = "timeCon"))
+res.auc = getAUC(res.split$Calibration,res.split$Validation)
 ```
 
 In the above example, the value range of `res.auc` is \[0,1\], and the

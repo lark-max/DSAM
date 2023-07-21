@@ -26,13 +26,13 @@ where this output is used to enable the application of various data-splitting al
 }
 \examples{
 data("DSA_test_smallData")
-result = dataSplit(DSA_test_smallData, list(sel.alg = "MDUPLEX",writeFile = FALSE))
+result = dataSplit(DSA_test_smallData)
 
 data("DSA_test_modData")
-result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P",writeFile = FALSE))
+result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P"))
 
 data("DSA_test_largeData")
-result = dataSplit(DSA_test_largeData, list(sel.alg = "SOMPLEX",writeFile = FALSE))
+result = dataSplit(DSA_test_largeData, list(sel.alg = "SOMPLEX"))
 
 }
 \references{

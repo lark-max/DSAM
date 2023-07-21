@@ -1,0 +1,30 @@
+Package: DSA
+Title: Data splitting algorithms for model developments
+Version: 1.0.0
+Authors@R: 
+    person(
+    	given="Feifei", 
+    	family="Zheng",
+    	email="feifeizheng@zju.edu.cn", 
+    	role=c("aut", "fnd"),
+      comment=c(ORCID = "")
+    )
+    person(
+    	given="Junyi", 
+    	family="Chen",
+    	email="jun1chen@zju.edu.cn", 
+    	role=c("aut", "cre"),
+      comment=c(ORCID = "0009-0001-1978-6475")
+    )
+Description: The package provides six different algorithms that can be used to split available data into training, test and validation subsets for model development.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: caret, kohonen, Matrix, pROC, stats, utils, xgboost
+Depends: R (>= 2.10)
+LazyData: true
+NeedsCompilation: no
+Packaged: 2023-07-21 07:43:24 UTC; junyi
+Author: Junyi Chen [aut, cre] (<https://orcid.org/0009-0001-1978-6475>)
+Maintainer: Junyi Chen <jun1chen@zju.edu.cn>

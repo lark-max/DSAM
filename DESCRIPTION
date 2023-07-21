@@ -25,6 +25,6 @@ Imports: caret, kohonen, Matrix, pROC, stats, utils, xgboost
 Depends: R (>= 2.10)
 LazyData: true
 NeedsCompilation: no
-Packaged: 2023-07-21 10:22:39 UTC; junyi
+Packaged: 2023-07-21 11:05:12 UTC; junyi
 Author: Junyi Chen [aut, cre] (<https://orcid.org/0009-0001-1978-6475>)
 Maintainer: Junyi Chen <jun1chen@zju.edu.cn>

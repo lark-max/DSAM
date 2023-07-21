@@ -336,7 +336,7 @@ algorithms, which can be calculated by invoking the function `getAUC`.
 For example:
 
 ``` r
-data("DSA_test_smallData")
+data("DSA_test_largeData")
 res.split = dataSplit(DSA_test_largeData,list(sel.alg = "timeCon"))
 res.auc = getAUC(res.split$Calibration,res.split$Validation)
 ```

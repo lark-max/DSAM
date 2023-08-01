@@ -399,7 +399,7 @@ SS <- function(data, control){
 }
 
 
-#' @title SBSS-P
+#' @title SBSS.P
 #' @description
 #' SBSS.P algorithm is a stochastic algorithm. It obtains data subsets through uniform sampling in each neuron after clustering through SOM neural network, with details given in May et al. (2010).
 #'
@@ -459,7 +459,7 @@ SBSS.P <- function(data, control){
     split.info$validKey <- c(split.info$validKey, som.info$neuron.cluster[[i]])
     som.info$neuron.cluster[[i]] <- NA
   }
-  print("SBSS-P sampling complete!")
+  print("SBSS.P sampling complete!")
   return(list(Train = data[split.info$trainKey,], Test = data[split.info$testKey,],
               Validation = data[split.info$validKey,]))
 

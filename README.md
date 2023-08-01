@@ -43,7 +43,7 @@ library(DSA)
 ## Instruction
 
 The package has several built-in data splitting algorithms, such as
-SOMPLEX, MDUPLEX, SBSS-P, etc. These algorithms are encapsulated and
+SOMPLEX, MDUPLEX, SBSS.P, etc. These algorithms are encapsulated and
 used by the user only by calling the function `dataSplit`.  
 Specific call formats such as:
 
@@ -193,7 +193,7 @@ result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P"))
 #> [1] "sampling on neuron: 58"
 #> [1] "sampling on neuron: 59"
 #> [1] "sampling on neuron: 60"
-#> [1] "SBSS-P sampling complete!"
+#> [1] "SBSS.P sampling complete!"
 
 data("DSA_test_largeData")
 result = dataSplit(DSA_test_largeData, list(sel.alg = "SOMPLEX"))

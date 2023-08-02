@@ -50,12 +50,12 @@ par.default <- function(){
 #'
 getAUC <- function(data1, data2){
   # Check data format
-  if(!is.vector(data1) & !is.matrix(data1) & !is.data.frame(data1)){
+  if(!mode(data1) %in% c("numeric","matrix","data.frame")){
     stop(
       paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data1)),"!","")
     )
   }
-  if(!is.vector(data2) & !is.matrix(data2) & !is.data.frame(data2)){
+  if(!mode(data2) %in% c("numeric","matrix","data.frame")){
     stop(
       paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data2)),"!","")
     )
@@ -73,9 +73,11 @@ getAUC <- function(data1, data2){
     )
   }
 
-  # Force convert data type to matrix when the type is vector
-  if(is.vector(data1) | is.vector(data2)){
+  # Force convert data type to matrix when the type is numeric
+  if(mode(data1) %in% "numeric"){
     data1 <- as.matrix(data1)
+  }
+  if(mode(data2) %in% "numeric"){
     data2 <- as.matrix(data2)
   }
 

@@ -52,12 +52,12 @@ getAUC <- function(data1, data2){
   # Check data format
   if(!mode(data1) %in% c("numeric","matrix","data.frame")){
     stop(
-      paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data1)),"!","")
+      paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data1)),"!",sep="")
     )
   }
   if(!mode(data2) %in% c("numeric","matrix","data.frame")){
     stop(
-      paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data2)),"!","")
+      paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data2)),"!",sep="")
     )
   }
 

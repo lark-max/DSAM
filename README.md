@@ -71,7 +71,7 @@ Boolean variable that determines whether the input vectors should be included du
 Random number seed. The default is 1000.
 
 `sel.alg`   
-A string variable that represents the available data splitting algorithms including "SOMPLEX", "MDUPLEX", "DUPLEX", "SBSS.P", "SS" and "timeCon". The default is "MDUPLEX".
+A string variable that represents the available data splitting algorithms including "SOMPLEX", "MDUPLEX", "DUPLEX", "SBSS.P", "SS" and "TIMECON". The default is "MDUPLEX".
 
 `prop.Tr`   
 The proportion of data allocated to the training subset, where the default is 0.6.
@@ -89,7 +89,7 @@ A string variable representing the output file name for the test data subset. Th
 A string variable representing the output file name for the validation data subset. The default is "Valid.txt".
 
 `loc.calib` 
-Vector type: When sel.alg = "timeCon", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is c(0,0.6), implying that the algorithm selects the first 60% of the data from the original dataset.
+Vector type: When sel.alg = "TIMECON", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is c(0,0.6), implying that the algorithm selects the first 60% of the data from the original dataset.
 
 `writeFile` 
 Boolean variable that determines whether the data subsets need to be output or not. The default is FALSE.
@@ -337,7 +337,7 @@ For example:
 
 ``` r
 data("DSA_test_largeData")
-res.split = dataSplit(DSA_test_largeData,list(sel.alg = "timeCon"))
+res.split = dataSplit(DSA_test_largeData,list(sel.alg = "TIMECON"))
 res.auc = getAUC(res.split$Calibration,res.split$Validation)
 ```
 

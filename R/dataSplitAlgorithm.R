@@ -4,13 +4,13 @@
 #'
 #' @param include.inp Boolean variable that determines whether the input vectors should be included during the Euclidean distance calculation. The default is TRUE.
 #' @param seed Random number seed. The default is 1000.
-#' @param sel.alg A string variable that represents the available data splitting algorithms including "SOMPLEX", "MDUPLEX", "DUPLEX", "SBSS.P", "SS" and "timeCon". The default is "MDUPLEX".
+#' @param sel.alg A string variable that represents the available data splitting algorithms including "SOMPLEX", "MDUPLEX", "DUPLEX", "SBSS.P", "SS" and "TIMECON". The default is "MDUPLEX".
 #' @param prop.Tr The proportion of data allocated to the training subset, where the default is 0.6.
 #' @param prop.Ts The proportion of data allocated to the test subset, where the default is 0.2.
 #' @param Train A string variable representing the output file name for the training data subset. The default is "Train.txt".
 #' @param Test A string variable representing the output file name for the test data subset. The default is "Test.txt".
 #' @param Validation A string variable representing the output file name for the validation data subset. The default is "Valid.txt".
-#' @param loc.calib Vector type: When sel.alg = "timeCon", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is c(0,0.6), implying that the algorithm selects the first 60% of the data from the original dataset.
+#' @param loc.calib Vector type: When sel.alg = "TIMECON", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is c(0,0.6), implying that the algorithm selects the first 60% of the data from the original dataset.
 #' @param writeFile Boolean variable that determines whether the data subsets need to be output or not. The default is FALSE.
 #'
 #' @return None
@@ -274,7 +274,7 @@ getSnen <- function(som.info, control){
 }
 
 
-#' @title Time-consecutive data split algorithm
+#' @title DSA - Time-consecutive algorithm
 #' @description
 #' This function selects a time-consecutive data from the original data set as the calibration (training and test) subset, and the remaining data is taken as the evaluation subset.
 #'
@@ -283,7 +283,7 @@ getSnen <- function(som.info, control){
 #'
 #' @return Return the calibration and validation subsets.
 #'
-timeCon <- function(data, control){
+TIMECON <- function(data, control){
   len <- nrow(data)
   start.point = 1 + len * control$loc.calib[1]
   end.point = len * control$loc.calib[2]
@@ -694,7 +694,7 @@ SOMPLEX <- function(data, control){
 #' DSA interface function: The user needs to provide a parameter list before data-splitting.
 #' These parameters have default values, with details given in the \code{\link{par.default}} function.
 #' Conditioned on the parameter list, this function carries out the data-splitting based on the algorithm specified by the user.
-#' The available algorithms include the traditional time-consecutive method (timeCon), DUPLEX, MDUPLEX SOMPLEX, SBSS.P, SS.
+#' The available algorithms include the traditional time-consecutive method (TIMECON), DUPLEX, MDUPLEX SOMPLEX, SBSS.P, SS.
 #' The algorithm details can be found in Chen et al. (2022). Note that this package focuses on deals with the dataset with multiple inputs but one output,
 #' where this output is used to enable the application of various data-splitting algorithms.
 #'
@@ -760,7 +760,7 @@ dataSplit <- function(data,control = list(),...){
 
   # Output data into txt files
   if(control$writeFile){
-    if(control$sel.alg != "timeCon"){
+    if(control$sel.alg != "TIMECON"){
       write.table(obj$Train,control$Train,row.names = F,col.names = T,sep='\t')
       write.table(obj$Test,control$Test,row.names = F,col.names = T,sep='\t')
       write.table(obj$Validation,control$Validation,row.names = F,col.names = T,sep='\t')

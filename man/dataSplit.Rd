@@ -20,7 +20,7 @@ Return the training, test and validation subsets. If the original data are requi
 DSA interface function: The user needs to provide a parameter list before data-splitting.
 These parameters have default values, with details given in the \code{\link{par.default}} function.
 Conditioned on the parameter list, this function carries out the data-splitting based on the algorithm specified by the user.
-The available algorithms include the traditional time-consecutive method (timeCon), DUPLEX, MDUPLEX SOMPLEX, SBSS.P, SS.
+The available algorithms include the traditional time-consecutive method (TIMECON), DUPLEX, MDUPLEX SOMPLEX, SBSS.P, SS.
 The algorithm details can be found in Chen et al. (2022). Note that this package focuses on deals with the dataset with multiple inputs but one output,
 where this output is used to enable the application of various data-splitting algorithms.
 }

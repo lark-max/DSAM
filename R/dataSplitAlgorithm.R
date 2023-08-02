@@ -349,8 +349,8 @@ TIMECON <- function(data, control){
 #'
 SSsample <- function(index, prop){
   sampleVec <- c()
-  interval <- ceiling(1/prop)
-  loc <- runif(1,0,32767) %% interval
+  interval <- 1/prop
+  loc <- runif(1,0,32767) %% ceiling(interval)
   while(loc <= length(index)){
     k <- ceiling(loc)
     sampleVec <- c(sampleVec, index[k])
@@ -778,7 +778,7 @@ dataSplit <- function(data,control = list(),...){
   # Check data integrity
   if(sum(is.na(data))!=0){
     stop(
-      "[Error]:Missing values in the input data"
+      "[Error]:Missing values in the input data!"
     )
   }
   # Check parameter list
@@ -791,6 +791,24 @@ dataSplit <- function(data,control = list(),...){
       toString(names(control)[!isValid])
     )
   }
+
+  # check the sampling proportion
+  if(control$prop.Tr > 1 | control$prop.Tr < 0){
+    stop(
+      "[Error]:Invalid range of parameter 'prop.Tr', should be [0,1]!"
+    )
+  }
+  if(control$prop.Ts > 1 | control$prop.Ts < 0){
+    stop(
+      "[Error]:Invalid range of parameter 'prop.Ts', should be [0,1]!"
+    )
+  }
+  if(control$prop.Tr + control$prop.Ts > 1){
+    stop(
+      "[Error]:prop.Tr+prop.Ts should be [0,1]!"
+    )
+  }
+
 
   # Split data
   start.time = Sys.time()

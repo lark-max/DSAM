@@ -3,7 +3,7 @@
 \docType{data}
 \name{DSA_test_smallData}
 \alias{DSA_test_smallData}
-\title{Test data - small}
+\title{Small test dataset}
 \format{
 A data frame with 200 rows and 5 variables
 #' \describe{
@@ -19,7 +19,7 @@ A data frame with 200 rows and 5 variables
 DSA_test_smallData
 }
 \description{
-A dataset containing the rainfall and runoff time series using for
+A small dataset containing the rainfall and runoff time series using for
 testing data splitting algorithms
 }
 \keyword{datasets}

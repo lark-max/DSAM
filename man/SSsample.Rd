@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{SSsample}
 \alias{SSsample}
-\title{SSsample}
+\title{Core function of SS sampling}
 \usage{
 SSsample(index, prop)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{timeCon}
 \alias{timeCon}
-\title{timeCon}
+\title{Time-consecutive data split algorithm}
 \usage{
 timeCon(data, control)
 }

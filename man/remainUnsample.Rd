@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{remainUnsample}
 \alias{remainUnsample}
-\title{remainUnsample}
+\title{Get the remain unsampled data after \code{\link{SSsample}}}
 \usage{
 remainUnsample(X, Y)
 }

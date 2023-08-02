@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{dataSplit}
 \alias{dataSplit}
-\title{dataSplit}
+\title{Main function of data splitting algorithm}
 \usage{
 dataSplit(data, control = list(), ...)
 }

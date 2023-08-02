@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{checkFull}
 \alias{checkFull}
-\title{checkFull}
+\title{Check whether the sample set is full}
 \usage{
 checkFull(split.info, num.train, num.test, num.valid)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{SS}
 \alias{SS}
-\title{SS}
+\title{DSA - SS algorithm}
 \usage{
 SS(data, control)
 }

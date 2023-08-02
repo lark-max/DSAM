@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{getAUC}
 \alias{getAUC}
-\title{getAUC}
+\title{Get the AUC value between two datasets}
 \usage{
 getAUC(data1, data2)
 }

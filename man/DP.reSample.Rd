@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{DP.reSample}
 \alias{DP.reSample}
-\title{DP.reSample}
+\title{Repeat sampling of DUPLEX}
 \usage{
 DP.reSample(split.info, choice)
 }

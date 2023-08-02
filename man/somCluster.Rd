@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{somCluster}
 \alias{somCluster}
-\title{somCluster}
+\title{Self-organized map clustering}
 \usage{
 somCluster(data)
 }

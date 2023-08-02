@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{DP.initialSample}
 \alias{DP.initialSample}
-\title{DP.initialSample}
+\title{Initial sampling of DUPLEX}
 \usage{
 DP.initialSample(split.info, choice)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{par.default}
 \alias{par.default}
-\title{par.default}
+\title{Default parameter list}
 \usage{
 par.default()
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{getSnen}
 \alias{getSnen}
-\title{getSnen}
+\title{Get sampling number of each SOM neuron}
 \usage{
 getSnen(som.info, control)
 }

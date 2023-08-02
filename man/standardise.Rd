@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{standardise}
 \alias{standardise}
-\title{standardise}
+\title{Standardized data}
 \usage{
 standardise(data)
 }

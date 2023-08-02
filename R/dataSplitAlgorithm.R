@@ -1,4 +1,4 @@
-#' @title par.default
+#' @title Default parameter list
 #' @description
 #' The list of parameters needs to be set by the user, each with a default value.
 #'
@@ -31,7 +31,7 @@ par.default <- function(){
 }
 
 
-#' @title getAUC
+#' @title Get the AUC value between two datasets
 #' @description
 #' This function calls \code{[kohonen]{xgboost}} to train the classifier, followed by calculating the similarity between the two given datasets. The return value is a AUC index, ranging between 0 and 1, where the AUC is closer to 0.5, the more similar the two data sets is.
 #'
@@ -84,7 +84,7 @@ getAUC <- function(data1, data2){
 }
 
 
-#' @title selectData
+#' @title Select specific split data
 #' @description
 #' Built-in function: This function decides whether to process the input dataset according to the parameter \code{include.inp}. If TRUE, this function removes Column 1 of the input dataset; otherwise, it returns the Column N of the data set.
 #'
@@ -102,7 +102,7 @@ selectData <- function(data,control){
 }
 
 
-#' @title standardise
+#' @title Standardized data
 #' @description
 #' Built-in function: This function is used to standardize the data.
 #'
@@ -123,7 +123,7 @@ standardise <- function(data){
 }
 
 
-#' @title DP.initialSample
+#' @title Initial sampling of DUPLEX
 #' @description
 #' Built-in function: The initial sampling function of DUPLEX algorithm, aimed to obtain the two data points with the farthest Euclidean distance from the original data set and assign them to the corresponding sampling subset.
 #'
@@ -147,7 +147,7 @@ DP.initialSample <- function(split.info, choice){
 }
 
 
-#' @title DP.reSample
+#' @title Repeat sampling of DUPLEX
 #' @description
 #' Built-in function: The cyclic sampling function of DUPLEX algorithm that takes the two data points farthest from the current sampling set and assigns them to the corresponding sampling subset.
 #'
@@ -187,7 +187,7 @@ DP.reSample <- function(split.info, choice){
 }
 
 
-#' @title checkFull
+#' @title Check whether the sample set is full
 #' @description
 #' Built-in function: This function includes four arguments,
 #' where the first one contains the information of the original dataset as well as the three subsets,
@@ -221,7 +221,7 @@ checkFull <- function(split.info, num.train, num.test, num.valid){
 }
 
 
-#' @title somCluster
+#' @title Self-organized map clustering
 #' @description
 #' Built-in function: This function performs clustering for a given dataset by calling the \code{[kohonen]{som}} function from a “kohonen” package.
 #'
@@ -252,7 +252,7 @@ somCluster <- function(data){
 }
 
 
-#' @title getSnen
+#' @title Get sampling number of each SOM neuron
 #' @description
 #' Built-in function: Calculates the maximum number of samples of each subset in each neuron within the SOM network based on the sampling ratio specified by the user.
 #'
@@ -274,7 +274,7 @@ getSnen <- function(som.info, control){
 }
 
 
-#' @title timeCon
+#' @title Time-consecutive data split algorithm
 #' @description
 #' This function selects a time-consecutive data from the original data set as the calibration (training and test) subset, and the remaining data is taken as the evaluation subset.
 #'
@@ -298,7 +298,7 @@ timeCon <- function(data, control){
 }
 
 
-#' @title SSsample
+#' @title Core function of SS sampling
 #' @description
 #' Built-in function: This function performs the SS algorithm.
 #'
@@ -321,7 +321,7 @@ SSsample <- function(index, prop){
 }
 
 
-#' @title remainUnsample
+#' @title Get the remain unsampled data after \code{\link{SSsample}}
 #' @description
 #' Built-in function: This function is used in the semi-deterministic SS algorithm, and it contains two parameters X and Y, both of which are in an increased order. All data points in X vector that have not appeared in Y vector will be recorded and returned by this function.
 #'
@@ -347,7 +347,7 @@ remainUnsample <- function(X, Y){
 }
 
 
-#' @title SS
+#' @title DSA - SS algorithm
 #' @description
 #' The systematic stratified (SS) is a semi-deterministic method, with details given in Zheng et al. (2018).
 #'
@@ -399,7 +399,7 @@ SS <- function(data, control){
 }
 
 
-#' @title SBSS.P
+#' @title DSA - SBSS.P algorithm
 #' @description
 #' SBSS.P algorithm is a stochastic algorithm. It obtains data subsets through uniform sampling in each neuron after clustering through SOM neural network, with details given in May et al. (2010).
 #'
@@ -466,7 +466,7 @@ SBSS.P <- function(data, control){
 }
 
 
-#' @title DUPLEX
+#' @title DSA - DUPLEX algorithm
 #' @description
 #' The deterministic DUPLEX algorithm, with details given in Chen et al. (2022).
 #'
@@ -534,7 +534,7 @@ DUPLEX <- function(data,control){
 }
 
 
-#' @title MDUPLEX
+#' @title DSA - MDUPLEX algorithm
 #' @description
 #' This is a modified MDUPLEX algorithm, which is also deterministic, with details given in Zheng et al. (2022).
 #'
@@ -622,7 +622,7 @@ MDUPLEX <- function(data,control){
 }
 
 
-#' @title SOMPLEX
+#' @title DSA - SOMPLEX algorithm
 #' @description
 #' SOMPLEX algorithm is a stochastic algorithm, with details given in Chen et al. (2022) and Zheng et al. (2023)
 #'
@@ -689,7 +689,7 @@ SOMPLEX <- function(data, control){
 }
 
 
-#' @title dataSplit
+#' @title Main function of data splitting algorithm
 #' @description
 #' DSA interface function: The user needs to provide a parameter list before data-splitting.
 #' These parameters have default values, with details given in the \code{\link{par.default}} function.

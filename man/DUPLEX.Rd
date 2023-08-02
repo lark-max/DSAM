@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{DUPLEX}
 \alias{DUPLEX}
-\title{DUPLEX}
+\title{DSA - DUPLEX algorithm}
 \usage{
 DUPLEX(data, control)
 }

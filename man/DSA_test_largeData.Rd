@@ -3,7 +3,7 @@
 \docType{data}
 \name{DSA_test_largeData}
 \alias{DSA_test_largeData}
-\title{Test data - large}
+\title{large test dataset}
 \format{
 A data frame with 3650 rows and 5 variables
 #' \describe{
@@ -19,7 +19,7 @@ A data frame with 3650 rows and 5 variables
 DSA_test_largeData
 }
 \description{
-A dataset containing the rainfall and runoff time series using for
+A large dataset containing the rainfall and runoff time series using for
 testing data splitting algorithms
 }
 \keyword{datasets}

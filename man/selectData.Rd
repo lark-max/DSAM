@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{selectData}
 \alias{selectData}
-\title{selectData}
+\title{Select specific split data}
 \usage{
 selectData(data, control)
 }

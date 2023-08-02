@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{SBSS.P}
 \alias{SBSS.P}
-\title{SBSS.P}
+\title{DSA - SBSS.P algorithm}
 \usage{
 SBSS.P(data, control)
 }

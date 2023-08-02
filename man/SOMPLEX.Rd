@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSplitAlgorithm.R
 \name{SOMPLEX}
 \alias{SOMPLEX}
-\title{SOMPLEX}
+\title{DSA - SOMPLEX algorithm}
 \usage{
 SOMPLEX(data, control)
 }

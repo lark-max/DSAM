@@ -1,5 +1,5 @@
-#' @title Test data - small
-#' @description  A dataset containing the rainfall and runoff time series using for
+#' @title Small test dataset
+#' @description  A small dataset containing the rainfall and runoff time series using for
 #' testing data splitting algorithms
 
 #' @format A data frame with 200 rows and 5 variables
@@ -14,8 +14,8 @@
 "DSA_test_smallData"
 
 
-#' @title Test data - middle
-#' @description  A dataset containing the rainfall and runoff time series using for
+#' @title Moderate test dataset
+#' @description  A moderate dataset containing the rainfall and runoff time series using for
 #' testing data splitting algorithms
 #'
 #' @format A data frame with 1000 rows and 5 variables
@@ -30,8 +30,8 @@
 "DSA_test_modData"
 
 
-#' @title Test data - large
-#' @description  A dataset containing the rainfall and runoff time series using for
+#' @title large test dataset
+#' @description  A large dataset containing the rainfall and runoff time series using for
 #' testing data splitting algorithms
 #'
 #' @format A data frame with 3650 rows and 5 variables

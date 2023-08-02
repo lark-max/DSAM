@@ -3,7 +3,7 @@
 \docType{data}
 \name{DSA_test_modData}
 \alias{DSA_test_modData}
-\title{Test data - middle}
+\title{Moderate test dataset}
 \format{
 A data frame with 1000 rows and 5 variables
 #' \describe{
@@ -19,7 +19,7 @@ A data frame with 1000 rows and 5 variables
 DSA_test_modData
 }
 \description{
-A dataset containing the rainfall and runoff time series using for
+A moderate dataset containing the rainfall and runoff time series using for
 testing data splitting algorithms
 }
 \keyword{datasets}

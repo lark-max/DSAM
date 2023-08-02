@@ -51,7 +51,6 @@ par.default <- function(){
 getAUC <- function(data1, data2){
   data <- as.data.frame(rbind(data1,data2))
   data$status <- c(rep(1,nrow(data1)),rep(0,nrow(data2)))
-  data$Idex <- NULL
 
   splitNum <- 10
   auc_value <- c()

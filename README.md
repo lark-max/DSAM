@@ -338,7 +338,9 @@ For example:
 ``` r
 data("DSA_test_largeData")
 res.split = dataSplit(DSA_test_largeData,list(sel.alg = "TIMECON"))
-res.auc = getAUC(res.split$Calibration,res.split$Validation)
+runoff.calib <- res.split$Calibration$O
+runoff.valid <- res.split$Validation$O
+res.auc = getAUC(runoff.calib,runoff.valid)
 ```
 
 In the above example, the value range of `res.auc` is \[0,1\], and the

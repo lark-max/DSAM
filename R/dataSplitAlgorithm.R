@@ -35,8 +35,8 @@ par.default <- function(){
 #' @description
 #' This function calls \code{[kohonen]{xgboost}} to train the classifier, followed by calculating the similarity between the two given datasets. The return value is a AUC index, ranging between 0 and 1, where the AUC is closer to 0.5, the more similar the two data sets is.
 #'
-#' @param data1 Dataset 1, the data type must be matrix or Data.frame.
-#' @param data2 Dataset 2, the data type must be matrix or Data.frame.
+#' @param data1 Dataset 1, the data type must be vector, matrix or Data.frame.
+#' @param data2 Dataset 2, the data type must be vector, matrix or Data.frame.
 #'
 #' @return Return the AUC value.
 #'
@@ -49,6 +49,44 @@ par.default <- function(){
 #' @export
 #'
 getAUC <- function(data1, data2){
+  # Check data format
+  if(!is.vector(data1) & !is.matrix(data1) & !is.data.frame(data1)){
+    stop(
+      paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data1)),"!","")
+    )
+  }
+  if(!is.vector(data2) & !is.matrix(data2) & !is.data.frame(data2)){
+    stop(
+      paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data2)),"!","")
+    )
+  }
+
+  # Check data integrity
+  if(sum(is.na(data1))!=0){
+    stop(
+      paste("[Error]:Missing values in the input data:",deparse(substitute(data1)),"!",sep="")
+    )
+  }
+  if(sum(is.na(data2))!=0){
+    stop(
+      paste("[Error]:Missing values in the input data:",deparse(substitute(data2)),"!",sep="")
+    )
+  }
+
+  # Force convert data type to matrix when the type is vector
+  if(is.vector(data1) | is.vector(data2)){
+    data1 <- as.matrix(data1)
+    data2 <- as.matrix(data2)
+  }
+
+  # Check the dimensions are consistent between the two input datasets
+  if(ncol(data1) != ncol(data2)){
+    stop(
+      "[Error]:Inconsistent dimensions of the two input datasets!"
+    )
+  }
+
+  # Data preprocessing
   data <- as.data.frame(rbind(data1,data2))
   data$status <- c(rep(1,nrow(data1)),rep(0,nrow(data2)))
 

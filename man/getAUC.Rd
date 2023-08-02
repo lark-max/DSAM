@@ -7,9 +7,9 @@
 getAUC(data1, data2)
 }
 \arguments{
-\item{data1}{Dataset 1, the data type must be matrix or Data.frame.}
+\item{data1}{Dataset 1, the data type must be vector, matrix or Data.frame.}
 
-\item{data2}{Dataset 2, the data type must be matrix or Data.frame.}
+\item{data2}{Dataset 2, the data type must be vector, matrix or Data.frame.}
 }
 \value{
 Return the AUC value.

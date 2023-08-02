@@ -35,8 +35,8 @@ par.default <- function(){
 #' @description
 #' This function calls \code{[kohonen]{xgboost}} to train the classifier, followed by calculating the similarity between the two given datasets. The return value is a AUC index, ranging between 0 and 1, where the AUC is closer to 0.5, the more similar the two data sets is.
 #'
-#' @param data1 Dataset 1, the data type must be vector, matrix or Data.frame.
-#' @param data2 Dataset 2, the data type must be vector, matrix or Data.frame.
+#' @param data1 Dataset 1, the data type must be numeric, matrix or Data.frame.
+#' @param data2 Dataset 2, the data type must be numeric, matrix or Data.frame.
 #'
 #' @return Return the AUC value.
 #'

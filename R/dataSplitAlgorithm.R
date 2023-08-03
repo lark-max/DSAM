@@ -373,7 +373,7 @@ remainUnsample <- function(X, Y){
   remainData <- c()
   ix <- iy <- 1
   while(ix <= length(X)){
-    if(iy >= length(Y))
+    if(iy > length(Y))
       break
     if(X[ix] == Y[iy])
       iy = iy + 1
@@ -381,7 +381,8 @@ remainUnsample <- function(X, Y){
       remainData  = c(remainData, X[ix])
     ix = ix + 1
   }
-  remainData = c(remainData, X[ix:length(X)])
+  if(ix <= length(X))
+    remainData = c(remainData, X[ix:length(X)])
   return(remainData)
 }
 
@@ -408,28 +409,27 @@ SS <- function(data, control){
 
   # deal with data
   select.data = selectData(data, control$include.inp)
-  select.data.std = standardise(select.data)
 
-  data.index <- seq(1,num.total,1)
+  data.index <- 1:num.total
 
   # Firstly get the output variable list
-  outputVec <- select.data.std[,ncol(select.data.std)]
+  outputVec <- select.data[,ncol(select.data)]
 
   # The data are first ordered along the output variable dimension in increasing order
   data.index <- data.index[order(outputVec),drop = FALSE]
 
-  calibrateProp = control$prop.Tr + control$prop.Ts
+  Prop.calib = control$prop.Tr + control$prop.Ts
   trainKey <- testKey <- validKey <- c()
 
   # The data is firstly divided into two parts,
   # which need to be sampled and those that do not need to be sampled
-  sampleKey <- SSsample(data.index,calibrateProp)
+  sampleKey <- SSsample(data.index,Prop.calib)
 
   # The unsampled data are allocated to validating subset
   validKey <- remainUnsample(data.index, sampleKey)
 
   # Then split sample into systematic testing and training sets
-  testKey <- SSsample(sampleKey, control$prop.Ts / calibrateProp)
+  testKey <- SSsample(sampleKey, control$prop.Ts / Prop.calib)
   trainKey <- remainUnsample(sampleKey, testKey)
 
   print("SS sampling complete!")

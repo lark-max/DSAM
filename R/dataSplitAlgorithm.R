@@ -407,13 +407,10 @@ SS <- function(data, control){
   num.test = round(num.total*control$prop.Ts)
   num.valid = num.total- (num.train + num.test)
 
-  # deal with data
-  select.data = selectData(data, control$include.inp)
-
   data.index <- 1:num.total
 
   # Firstly get the output variable list
-  outputVec <- select.data[,ncol(select.data)]
+  outputVec <- data[,ncol(data)]
 
   # The data are first ordered along the output variable dimension in increasing order
   data.index <- data.index[order(outputVec),drop = FALSE]

@@ -6,13 +6,13 @@ Authors@R:
     	given="Feifei", 
     	family="Zheng",
     	email="feifeizheng@zju.edu.cn", 
-    	role=c("ctb", "fnd")
+    	role=c("aut", "cph")
      )
     person(
     	given="Junyi", 
     	family="Chen",
     	email="jun1chen@zju.edu.cn", 
-    	role=c("aut", "cre"),
+    	role=c("aut", "cre", "trl"),
       comment=c(ORCID = "0009-0001-1978-6475")
     )
 Description: Providing six different algorithms that can be used to split available data into training, test and validation subsets with similar distribution for model development.
@@ -24,6 +24,6 @@ Imports: caret, kohonen, Matrix, pROC, stats, utils, xgboost
 Depends: R (>= 2.10)
 LazyData: true
 NeedsCompilation: no
-Packaged: 2023-08-10 01:42:20 UTC; junyi
-Author: Junyi Chen [aut, cre] (<https://orcid.org/0009-0001-1978-6475>)
+Packaged: 2023-08-10 02:13:59 UTC; junyi
+Author: Junyi Chen [aut, cre, trl] (<https://orcid.org/0009-0001-1978-6475>)
 Maintainer: Junyi Chen <jun1chen@zju.edu.cn>

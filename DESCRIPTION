@@ -2,19 +2,18 @@ Package: DSAM
 Title: Data Splitting Algorithms for Model Developments
 Version: 1.0.0
 Authors@R: 
-    person(
-    	given="Feifei", 
-    	family="Zheng",
-    	email="feifeizheng@zju.edu.cn", 
-    	role=c("aut", "cph")
-     )
-    person(
-    	given="Junyi", 
-    	family="Chen",
-    	email="jun1chen@zju.edu.cn", 
-    	role=c("aut", "cre", "trl"),
-      comment=c(ORCID = "0009-0001-1978-6475")
-    )
+    c(person(
+      	given="Feifei", 
+      	family="Zheng",
+      	email="feifeizheng@zju.edu.cn", 
+      	role=c("aut", "cph")),
+      person(
+      	given="Junyi", 
+      	family="Chen",
+      	email="jun1chen@zju.edu.cn", 
+      	role=c("aut", "cre", "trl"),
+        comment=c(ORCID = "0009-0001-1978-6475"))
+      )
 Description: Providing six different algorithms that can be used to split available data into training, test and validation subsets with similar distribution for model development.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -24,6 +23,7 @@ Imports: caret, kohonen, Matrix, pROC, stats, utils, xgboost
 Depends: R (>= 2.10)
 LazyData: true
 NeedsCompilation: no
-Packaged: 2023-08-10 02:13:59 UTC; junyi
-Author: Junyi Chen [aut, cre, trl] (<https://orcid.org/0009-0001-1978-6475>)
+Packaged: 2023-08-10 03:10:34 UTC; junyi
+Author: Feifei Zheng [aut, cph],
+  Junyi Chen [aut, cre, trl] (<https://orcid.org/0009-0001-1978-6475>)
 Maintainer: Junyi Chen <jun1chen@zju.edu.cn>

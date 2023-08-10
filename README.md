@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# DSA
+# DSAM
 
 <!-- badges: start -->
 
@@ -11,7 +11,7 @@ characteristics. <!-- badges: end -->
 
 ## Installation
 
-Here are two ways to install this package in Rstudio on your PC:
+There are two ways to install this package in Rstudio on your PC:
 
 Way 1:  
 Firstly ensure that you have installed the package `devtools`:
@@ -23,7 +23,7 @@ install.packages("devtools")
 Then you can install the package like so:
 
 ``` r
-devtools::install_github("lark-max/DSA")
+devtools::install_github("lark-max/DSAM")
 ```
 
 Way 2:  
@@ -31,13 +31,13 @@ You can download the zip package provided in the `release` page, and
 install the package by hand:
 
 ``` r
-install.packages("DSA_1.0.0.tar.gz",repos = NULL,type = "source")
+install.packages("DSAM_1.0.0.tar.gz",repos = NULL,type = "source")
 ```
 
 After installation, You can then load the package by:
 
 ``` r
-library(DSA)
+library(DSAM)
 ```
 
 ## Instruction
@@ -55,7 +55,7 @@ The parameters of the function are composed of two parts. The first
 parameter `data` is usually the rainfall runoff data in data.frame or
 matrix format, and set the first column as the subscript column. For the
 specific format requirements, please refer to the documentation of the
-built-in dataset(`DSA_test_smallData`).
+built-in dataset(`DSAM_test_smallData`).
 
 The second parameter `control` is a list of customized information, such
 as the selected data splitting algorithm, the proportion of subsets,
@@ -101,10 +101,10 @@ The following example can be run directly from the user’s Rstudio
 client.
 
 ``` r
-library(DSA)
+library(DSAM)
 ## basic example code
-data("DSA_test_smallData")
-result = dataSplit(DSA_test_smallData)
+data("DSAM_test_smallData")
+result = dataSplit(DSAM_test_smallData)
 #> [1] "Start the initial sampling..."
 #> [1] "Initial sampling successfully!"
 #> [1] "Start the loop sampling..."
@@ -130,8 +130,8 @@ result = dataSplit(DSA_test_smallData)
 #> [1] "Remaining unsampled data: 4"
 #> [1] "MDUPLEX sampling complete!"
 
-data("DSA_test_modData")
-result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P"))
+data("DSAM_test_modData")
+result = dataSplit(DSAM_test_modData, list(sel.alg = "SBSS.P"))
 #> [1] "Total neuron: 60"
 #> [1] "sampling on neuron: 1"
 #> [1] "sampling on neuron: 2"
@@ -195,8 +195,8 @@ result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P"))
 #> [1] "sampling on neuron: 60"
 #> [1] "SBSS.P sampling complete!"
 
-data("DSA_test_largeData")
-result = dataSplit(DSA_test_largeData, list(sel.alg = "SOMPLEX"))
+data("DSAM_test_largeData")
+result = dataSplit(DSAM_test_largeData, list(sel.alg = "SOMPLEX"))
 #> [1] "Total neuron: 126"
 #> [1] "sampling on neuron: 1"
 #> [1] "sampling on neuron: 2"
@@ -336,8 +336,8 @@ algorithms, which can be calculated by invoking the function `getAUC`.
 For example:
 
 ``` r
-data("DSA_test_largeData")
-res.split = dataSplit(DSA_test_largeData,list(sel.alg = "TIMECON"))
+data("DSAM_test_largeData")
+res.split = dataSplit(DSAM_test_largeData,list(sel.alg = "TIMECON"))
 runoff.calib <- res.split$Calibration$O
 runoff.valid <- res.split$Validation$O
 res.auc = getAUC(runoff.calib,runoff.valid)

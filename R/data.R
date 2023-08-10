@@ -11,7 +11,7 @@
 #'   \item{O}{The output vector, usually the runoff}
 #'   ...
 #' }
-"DSA_test_smallData"
+"DSAM_test_smallData"
 
 
 #' @title Moderate test dataset
@@ -27,7 +27,7 @@
 #'   \item{O}{The output vector, usually the runoff}
 #'   ...
 #' }
-"DSA_test_modData"
+"DSAM_test_modData"
 
 
 #' @title large test dataset
@@ -43,6 +43,6 @@
 #'   \item{O}{The output vector, usually the runoff}
 #'   ...
 #' }
-"DSA_test_largeData"
+"DSAM_test_largeData"
 
 

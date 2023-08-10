@@ -2,16 +2,18 @@
 #' @description
 #' The list of parameters needs to be set by the user, each with a default value.
 #'
-#' @param include.inp Boolean variable that determines whether the input vectors should be included during the Euclidean distance calculation. The default is TRUE.
-#' @param seed Random number seed. The default is 1000.
-#' @param sel.alg A string variable that represents the available data splitting algorithms including "SOMPLEX", "MDUPLEX", "DUPLEX", "SBSS.P", "SS" and "TIMECON". The default is "MDUPLEX".
-#' @param prop.Tr The proportion of data allocated to the training subset, where the default is 0.6.
-#' @param prop.Ts The proportion of data allocated to the test subset, where the default is 0.2.
-#' @param Train A string variable representing the output file name for the training data subset. The default is "Train.txt".
-#' @param Test A string variable representing the output file name for the test data subset. The default is "Test.txt".
-#' @param Validation A string variable representing the output file name for the validation data subset. The default is "Valid.txt".
-#' @param loc.calib Vector type: When sel.alg = "TIMECON", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is c(0,0.6), implying that the algorithm selects the first 60% of the data from the original dataset.
-#' @param writeFile Boolean variable that determines whether the data subsets need to be output or not. The default is FALSE.
+#' \describe{
+#' \item{include.inp}{Boolean variable that determines whether the input vectors should be included during the Euclidean distance calculation. The default is \code{TRUE.}  }
+#' \item{seed}{Random number seed. The default is \code{1000.}  }
+#' \item{sel.alg}{A string variable that represents the available data splitting algorithms including \code{"SOMPLEX"}, \code{"MDUPLEX"}, \code{"DUPLEX"}, \code{"SBSS.P"}, \code{"SS"} and \code{"TIMECON"}. The default is \code{"MDUPLEX"}.  }
+#' \item{prop.Tr}{The proportion of data allocated to the training subset, where the default is \code{0.6}.  }
+#' \item{prop.Ts}{The proportion of data allocated to the test subset, where the default is \code{0.2}.  }
+#' \item{Train}{A string variable representing the output file name for the training data subset. The default is \code{"Train.txt"}.  }
+#' \item{Test}{A string variable representing the output file name for the test data subset. The default is \code{"Test.txt"}.  }
+#' \item{Validation}{A string variable representing the output file name for the validation data subset. The default is \code{"Valid.txt"}.  }
+#' \item{loc.calib}{Vector type: When sel.alg = "TIMECON", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is \code{c(0,0.6)}, implying that the algorithm selects the first 60% of the data from the original dataset.  }
+#' \item{writeFile}{Boolean variable that determines whether the data subsets need to be output or not. The default is \code{FALSE}.  }
+#' }
 #'
 #' @return None
 #'
@@ -96,7 +98,7 @@ getAUC <- function(data1, data2){
   auc_value <- c()
 
   # Set K folds
-  folds <- createFolds(y=data$status, k=splitNum)
+  folds <- caret::createFolds(y=data$status, k=splitNum)
 
   # The classifier is trained for each fold and the auc value is calculated
   for(i in 1:splitNum){
@@ -105,19 +107,19 @@ getAUC <- function(data1, data2){
 
     # Data preprocessing
     trainData <- data.matrix(train[,-ncol(train)])
-    trainData <- Matrix(trainData,sparse = T)
-    dtrain <- xgb.DMatrix(data = trainData, label = train$status)
+    trainData <- Matrix::Matrix(trainData,sparse = T)
+    dtrain <- xgboost::xgb.DMatrix(data = trainData, label = train$status)
     testData <- data.matrix(test[,-ncol(test)])
-    testData <- Matrix(testData,sparse = T)
+    testData <- Matrix::Matrix(testData,sparse = T)
     dtest <- xgb.DMatrix(data = testData, label = test$status)
 
     # xgboost classifier
-    model <- xgboost(data = dtrain,verbosity = 0, max_depth=6, eta=0.5,nrounds=100,
+    model <- xgboost::xgboost(data = dtrain,verbosity = 0, max_depth=6, eta=0.5,nrounds=100,
                      objective='binary:logistic', eval_metric = 'auc')
 
-    pre_xgb = round(predict(model,newdata = dtest))
+    pre_xgb = round(stats::predict(model,newdata = dtest))
 
-    auc_value = c(auc_value, as.numeric(auc(test$status,pre_xgb,levels=c(1,0),direction=">")))
+    auc_value = c(auc_value, as.numeric(pROC::auc(test$status,pre_xgb,levels=c(1,0),direction=">")))
   }
   return(mean(auc_value))
 }
@@ -169,6 +171,8 @@ standardise <- function(data){
 #' @param split.info A list containing relevant sampling information such as the original dataset and three sample subsets.
 #' @param choice The variable must be one name of the three sample subsets contained in split.info, according to which the function assigns the current two data points to the specific sampling subset.
 #'
+#' @importFrom stats dist
+#'
 #' @return Return the training, test and validation subsets. If the original data are required to be split into two subsets, the training and test subsets can be combined into a single calibration subset.
 #'
 DP.initialSample <- function(split.info, choice){
@@ -176,7 +180,7 @@ DP.initialSample <- function(split.info, choice){
     return(split.info)
 
   # Generate euclidean distance matrix
-  distMat <- as.matrix(dist(split.info$data[split.info$index,],method = "euclidean"))
+  distMat <- as.matrix(stats::dist(split.info$data[split.info$index,],method = "euclidean"))
   max.points <- which(distMat == max(distMat), arr.ind = T)
 
   eval(parse(text = paste("split.info$",choice,"=c(split.info$",choice,
@@ -193,6 +197,8 @@ DP.initialSample <- function(split.info, choice){
 #' @param split.info A list containing relevant sampling information such as the original dataset and three sample subsets.
 #' @param choice The variable must be one name of the three sample subsets contained in split.info, according to which the function assigns the current two data points to the specific sampling subset.
 #'
+#' @importFrom stats dist
+#'
 #' @return Return the training, test and validation subsets. If the original data are required to be split into two subsets, the training and test subsets can be combined into a single calibration subset.
 #'
 DP.reSample <- function(split.info, choice){
@@ -204,11 +210,12 @@ DP.reSample <- function(split.info, choice){
   }
 
   originSet <- as.matrix(split.info$data[split.info$index,])
+  sampleSet <- NULL
   eval(parse(text = paste("sampleSet <- as.matrix(split.info$data[split.info$",choice,",])",sep="")))
   mergeSet <- rbind(originSet,sampleSet)
 
   # Generate euclidean distance matrix
-  distMat <- as.matrix(dist(mergeSet,method = "euclidean"))
+  distMat <- as.matrix(stats::dist(mergeSet,method = "euclidean"))
 
   len.org <- nrow(originSet)
   len.sam <- nrow(sampleSet)
@@ -280,7 +287,7 @@ somCluster <- function(data){
     neuron.col = neuron.col
   )
   # som train, need loading the package: kohonen
-  som.model <- som(data, grid = somgrid(neuron.info$neuron.row, neuron.info$neuron.col,
+  som.model <- kohonen::som(data, grid = kohonen::somgrid(neuron.info$neuron.row, neuron.info$neuron.col,
                                         "hexagonal"))
   # summary
   neuron.info$neuron.cluster <- list()
@@ -313,7 +320,7 @@ getSnen <- function(som.info, control){
 }
 
 
-#' @title DSA - Time-consecutive algorithm
+#' @title DSAM - Time-consecutive algorithm
 #' @description
 #' This function selects a time-consecutive data from the original data set as the calibration (training and test) subset, and the remaining data is taken as the evaluation subset.
 #'
@@ -350,7 +357,7 @@ TIMECON <- function(data, control){
 SSsample <- function(index, prop){
   sampleVec <- c()
   interval <- 1/prop
-  loc <- runif(1,0,32767) %% ceiling(interval)
+  loc <- stats::runif(1,0,32767) %% ceiling(interval)
   while(loc <= length(index)){
     k <- ceiling(loc)
     sampleVec <- c(sampleVec, index[k])
@@ -387,7 +394,7 @@ remainUnsample <- function(X, Y){
 }
 
 
-#' @title DSA - SS algorithm
+#' @title DSAM - SS algorithm
 #' @description
 #' The systematic stratified (SS) is a semi-deterministic method, with details given in Zheng et al. (2018).
 #'
@@ -435,7 +442,7 @@ SS <- function(data, control){
 }
 
 
-#' @title DSA - SBSS.P algorithm
+#' @title DSAM - SBSS.P algorithm
 #' @description
 #' SBSS.P algorithm is a stochastic algorithm. It obtains data subsets through uniform sampling in each neuron after clustering through SOM neural network, with details given in May et al. (2010).
 #'
@@ -502,7 +509,7 @@ SBSS.P <- function(data, control){
 }
 
 
-#' @title DSA - DUPLEX algorithm
+#' @title DSAM - DUPLEX algorithm
 #' @description
 #' The deterministic DUPLEX algorithm, with details given in Chen et al. (2022).
 #'
@@ -570,7 +577,7 @@ DUPLEX <- function(data,control){
 }
 
 
-#' @title DSA - MDUPLEX algorithm
+#' @title DSAM - MDUPLEX algorithm
 #' @description
 #' This is a modified MDUPLEX algorithm, which is also deterministic, with details given in Zheng et al. (2022).
 #'
@@ -658,7 +665,7 @@ MDUPLEX <- function(data,control){
 }
 
 
-#' @title DSA - SOMPLEX algorithm
+#' @title DSAM - SOMPLEX algorithm
 #' @description
 #' SOMPLEX algorithm is a stochastic algorithm, with details given in Chen et al. (2022) and Zheng et al. (2023)
 #'
@@ -727,7 +734,7 @@ SOMPLEX <- function(data, control){
 
 #' @title Main function of data splitting algorithm
 #' @description
-#' DSA interface function: The user needs to provide a parameter list before data-splitting.
+#' DSAM interface function: The user needs to provide a parameter list before data-splitting.
 #' These parameters have default values, with details given in the \code{\link{par.default}} function.
 #' Conditioned on the parameter list, this function carries out the data-splitting based on the algorithm specified by the user.
 #' The available algorithms include the traditional time-consecutive method (TIMECON), DUPLEX, MDUPLEX SOMPLEX, SBSS.P, SS.
@@ -756,14 +763,14 @@ SOMPLEX <- function(data, control){
 #' Zheng, F., Chen, J., Ma, Y.,  Chen Q., Maier H. R., and Gupta H.(2023). A Robust Strategy to Account for Data Sampling Variability in the Development of Hydrological Models, Water Resources Research, 59(3).
 #'
 #' @examples
-#' data("DSA_test_smallData")
-#' result = dataSplit(DSA_test_smallData)
+#' data("DSAM_test_smallData")
+#' result = dataSplit(DSAM_test_smallData)
 #'
-#' data("DSA_test_modData")
-#' result = dataSplit(DSA_test_modData, list(sel.alg = "SBSS.P"))
+#' data("DSAM_test_modData")
+#' result = dataSplit(DSAM_test_modData, list(sel.alg = "SBSS.P"))
 #'
-#' data("DSA_test_largeData")
-#' result = dataSplit(DSA_test_largeData, list(sel.alg = "SOMPLEX"))
+#' data("DSAM_test_largeData")
+#' result = dataSplit(DSAM_test_largeData, list(sel.alg = "SOMPLEX"))
 #'
 dataSplit <- function(data,control = list(),...){
   # Check data format
@@ -780,7 +787,7 @@ dataSplit <- function(data,control = list(),...){
   }
   # Check parameter list
   stopifnot(is.list(control))
-  control <- modifyList(par.default(),control)
+  control <- utils::modifyList(par.default(),control)
   isValid <- names(control) %in% names(par.default())
   if (any(!isValid)) {
     stop(
@@ -815,12 +822,12 @@ dataSplit <- function(data,control = list(),...){
   # Output data into txt files
   if(control$writeFile){
     if(control$sel.alg != "TIMECON"){
-      write.table(obj$Train,control$Train,row.names = F,col.names = T,sep='\t')
-      write.table(obj$Test,control$Test,row.names = F,col.names = T,sep='\t')
-      write.table(obj$Validation,control$Validation,row.names = F,col.names = T,sep='\t')
+      utils::write.table(obj$Train,control$Train,row.names = F,col.names = T,sep='\t')
+      utils::write.table(obj$Test,control$Test,row.names = F,col.names = T,sep='\t')
+      utils::write.table(obj$Validation,control$Validation,row.names = F,col.names = T,sep='\t')
     }else{
-      write.table(obj$Calibration,"Calibration.txt",row.names = F,col.names = T,sep='\t')
-      write.table(obj$Validation,"Validation.txt",row.names = F,col.names = T,sep='\t')
+      utils::write.table(obj$Calibration,"Calibration.txt",row.names = F,col.names = T,sep='\t')
+      utils::write.table(obj$Validation,"Validation.txt",row.names = F,col.names = T,sep='\t')
     }
   }
   return(obj)

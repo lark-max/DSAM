@@ -6,7 +6,7 @@
 \title{Small test dataset}
 \format{
 A data frame with 200 rows and 5 variables
-#' \describe{
+\describe{
 \item{Idex}{Data subscript that marks the position of each data point}
 \item{I}{input vectors}
 \item{I.1}{input vectors}

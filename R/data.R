@@ -3,7 +3,7 @@
 #' testing data splitting algorithms
 
 #' @format A data frame with 200 rows and 5 variables
-#' #' \describe{
+#'  \describe{
 #'   \item{Idex}{Data subscript that marks the position of each data point}
 #'   \item{I}{input vectors}
 #'   \item{I.1}{input vectors}
@@ -19,7 +19,7 @@
 #' testing data splitting algorithms
 #'
 #' @format A data frame with 1000 rows and 5 variables
-#' #' \describe{
+#' \describe{
 #'   \item{Idex}{Data subscript that marks the position of each data point}
 #'   \item{I}{input vectors}
 #'   \item{I.1}{input vectors}
@@ -35,7 +35,7 @@
 #' testing data splitting algorithms
 #'
 #' @format A data frame with 3650 rows and 5 variables
-#' #' \describe{
+#' \describe{
 #'   \item{Idex}{Data subscript that marks the position of each data point}
 #'   \item{I}{input vectors}
 #'   \item{I.1}{input vectors}

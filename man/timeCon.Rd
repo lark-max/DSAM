@@ -2,7 +2,7 @@
 % Please edit documentation in R/DSAM.R
 \name{TIMECON}
 \alias{TIMECON}
-\title{DSAM - Time-consecutive algorithm}
+\title{'DSAM' - Time-consecutive algorithm}
 \usage{
 TIMECON(data, control)
 }

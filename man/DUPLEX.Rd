@@ -2,7 +2,7 @@
 % Please edit documentation in R/DSAM.R
 \name{DUPLEX}
 \alias{DUPLEX}
-\title{DSAM - DUPLEX algorithm}
+\title{'DSAM' - DUPLEX algorithm}
 \usage{
 DUPLEX(data, control)
 }

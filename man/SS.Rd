@@ -2,7 +2,7 @@
 % Please edit documentation in R/DSAM.R
 \name{SS}
 \alias{SS}
-\title{DSAM - SS algorithm}
+\title{'DSAM' - SS algorithm}
 \usage{
 SS(data, control)
 }

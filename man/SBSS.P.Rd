@@ -2,7 +2,7 @@
 % Please edit documentation in R/DSAM.R
 \name{SBSS.P}
 \alias{SBSS.P}
-\title{DSAM - SBSS.P algorithm}
+\title{'DSAM' - SBSS.P algorithm}
 \usage{
 SBSS.P(data, control)
 }

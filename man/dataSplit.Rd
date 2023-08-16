@@ -17,7 +17,7 @@ dataSplit(data, control = list(), ...)
 Return the training, test and validation subsets. If the original data are required to be split into two subsets, the training and test subsets can be combined into a single calibration subset.
 }
 \description{
-DSAM interface function: The user needs to provide a parameter list before data-splitting.
+'DSAM' interface function: The user needs to provide a parameter list before data-splitting.
 These parameters have default values, with details given in the \code{\link{par.default}} function.
 Conditioned on the parameter list, this function carries out the data-splitting based on the algorithm specified by the user.
 The available algorithms include the traditional time-consecutive method (TIMECON), DUPLEX, MDUPLEX SOMPLEX, SBSS.P, SS.
@@ -26,13 +26,13 @@ where this output is used to enable the application of various data-splitting al
 }
 \examples{
 data("DSAM_test_smallData")
-result = dataSplit(DSAM_test_smallData)
+res.sml = dataSplit(DSAM_test_smallData)
 
 data("DSAM_test_modData")
-result = dataSplit(DSAM_test_modData, list(sel.alg = "SBSS.P"))
+res.mod = dataSplit(DSAM_test_modData, list(sel.alg = "SBSS.P"))
 
 data("DSAM_test_largeData")
-result = dataSplit(DSAM_test_largeData, list(sel.alg = "SOMPLEX"))
+res.lag = dataSplit(DSAM_test_largeData, list(sel.alg = "SOMPLEX"))
 
 }
 \references{

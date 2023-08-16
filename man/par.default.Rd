@@ -13,8 +13,8 @@ None
 The list of parameters needs to be set by the user, each with a default value.
 
 \describe{
-\item{include.inp}{Boolean variable that determines whether the input vectors should be included during the Euclidean distance calculation. The default is \code{TRUE.}  }
-\item{seed}{Random number seed. The default is \code{1000.}  }
+\item{include.inp}{Boolean variable that determines whether the input vectors should be included during the Euclidean distance calculation. The default is \code{TRUE}.  }
+\item{seed}{Random number seed. The default is \code{1000}.  }
 \item{sel.alg}{A string variable that represents the available data splitting algorithms including \code{"SOMPLEX"}, \code{"MDUPLEX"}, \code{"DUPLEX"}, \code{"SBSS.P"}, \code{"SS"} and \code{"TIMECON"}. The default is \code{"MDUPLEX"}.  }
 \item{prop.Tr}{The proportion of data allocated to the training subset, where the default is \code{0.6}.  }
 \item{prop.Ts}{The proportion of data allocated to the test subset, where the default is \code{0.2}.  }
@@ -23,5 +23,6 @@ The list of parameters needs to be set by the user, each with a default value.
 \item{Validation}{A string variable representing the output file name for the validation data subset. The default is \code{"Valid.txt"}.  }
 \item{loc.calib}{Vector type: When sel.alg = "TIMECON", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is \code{c(0,0.6)}, implying that the algorithm selects the first 60\% of the data from the original dataset.  }
 \item{writeFile}{Boolean variable that determines whether the data subsets need to be output or not. The default is \code{FALSE}.  }
+\item{showTrace}{Boolean variable that determines the level of user feedback. The default is \code{FALSE}.   }
 }
 }

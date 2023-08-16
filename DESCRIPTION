@@ -6,16 +6,26 @@ Authors@R:
       	given="Feifei", 
       	family="Zheng",
       	email="feifeizheng@zju.edu.cn", 
-      	role=c("aut", "cph")),
+      	role=c("aut", "ths")),
       person(
       	given="Junyi", 
       	family="Chen",
       	email="jun1chen@zju.edu.cn", 
-      	role=c("aut", "cre", "trl"),
+      	role=c("aut", "cre"),
         comment=c(ORCID = "0009-0001-1978-6475"))
       )
-Description: Providing six different algorithms that can be used to split available data into training, test and validation subsets with similar distribution for model development.
+Description: Providing six different algorithms that can be used to split the 
+    available data into training, test and validation subsets with similar distribution 
+    for hydrological model developments. The dataSplit() function will help you divide 
+    the data according to specific requirements, and you can refer to the par.default() 
+    function to set the parameters for data splitting. The getAUC() function will help 
+    you measure the similarity of distribution features between the data subsets.
+    For more information about the data splitting algorithms, please refer to:
+    Chen et al. (2022) <doi:10.1016/j.jhydrol.2022.128340>, 
+    Zheng et al. (2022) <doi:10.1029/2021WR031818>.
 License: MIT + file LICENSE
+URL: https://github.com/lark-max/DSAM
+BugReports: https://github.com/lark-max/DSAM/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
@@ -23,7 +33,7 @@ Imports: caret, kohonen, Matrix, pROC, stats, utils, xgboost
 Depends: R (>= 2.10)
 LazyData: true
 NeedsCompilation: no
-Packaged: 2023-08-10 03:34:26 UTC; junyi
-Author: Feifei Zheng [aut, cph],
-  Junyi Chen [aut, cre, trl] (<https://orcid.org/0009-0001-1978-6475>)
+Packaged: 2023-08-16 14:18:20 UTC; junyi
+Author: Feifei Zheng [aut, ths],
+  Junyi Chen [aut, cre] (<https://orcid.org/0009-0001-1978-6475>)
 Maintainer: Junyi Chen <jun1chen@zju.edu.cn>

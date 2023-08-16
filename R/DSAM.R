@@ -3,8 +3,8 @@
 #' The list of parameters needs to be set by the user, each with a default value.
 #'
 #' \describe{
-#' \item{include.inp}{Boolean variable that determines whether the input vectors should be included during the Euclidean distance calculation. The default is \code{TRUE.}  }
-#' \item{seed}{Random number seed. The default is \code{1000.}  }
+#' \item{include.inp}{Boolean variable that determines whether the input vectors should be included during the Euclidean distance calculation. The default is \code{TRUE}.  }
+#' \item{seed}{Random number seed. The default is \code{1000}.  }
 #' \item{sel.alg}{A string variable that represents the available data splitting algorithms including \code{"SOMPLEX"}, \code{"MDUPLEX"}, \code{"DUPLEX"}, \code{"SBSS.P"}, \code{"SS"} and \code{"TIMECON"}. The default is \code{"MDUPLEX"}.  }
 #' \item{prop.Tr}{The proportion of data allocated to the training subset, where the default is \code{0.6}.  }
 #' \item{prop.Ts}{The proportion of data allocated to the test subset, where the default is \code{0.2}.  }
@@ -13,6 +13,7 @@
 #' \item{Validation}{A string variable representing the output file name for the validation data subset. The default is \code{"Valid.txt"}.  }
 #' \item{loc.calib}{Vector type: When sel.alg = "TIMECON", the program will select a continuous time-series data subset from the original data set, where the start and end positions are determined by this vector, with the first and the second value representing the start and end position in percentage of the original dataset. The default is \code{c(0,0.6)}, implying that the algorithm selects the first 60% of the data from the original dataset.  }
 #' \item{writeFile}{Boolean variable that determines whether the data subsets need to be output or not. The default is \code{FALSE}.  }
+#' \item{showTrace}{Boolean variable that determines the level of user feedback. The default is \code{FALSE}.   }
 #' }
 #'
 #' @return None
@@ -28,7 +29,8 @@ par.default <- function(){
     Test = "Test.txt",
     Validation = "Valid.txt",
     loc.calib = c(0,0.6),
-    writeFile = FALSE
+    writeFile = FALSE,
+    showTrace = FALSE
   )
 }
 
@@ -115,7 +117,7 @@ getAUC <- function(data1, data2){
 
     # xgboost classifier
     model <- xgboost::xgboost(data = dtrain,verbosity = 0, max_depth=6, eta=0.5,nrounds=100,
-                     objective='binary:logistic', eval_metric = 'auc')
+                     objective='binary:logistic', eval_metric = 'auc', verbose = 0)
 
     pre_xgb = round(stats::predict(model,newdata = dtest))
 
@@ -212,13 +214,17 @@ DP.reSample <- function(split.info, choice){
   originSet <- as.matrix(split.info$data[split.info$index,])
   sampleSet <- NULL
   eval(parse(text = paste("sampleSet <- as.matrix(split.info$data[split.info$",choice,",])",sep="")))
-  mergeSet <- rbind(originSet,sampleSet)
-
-  # Generate euclidean distance matrix
-  distMat <- as.matrix(stats::dist(mergeSet,method = "euclidean"))
-
   len.org <- nrow(originSet)
   len.sam <- nrow(sampleSet)
+  mergeSet <- rbind(originSet,sampleSet)
+  len.mge <- len.org + len.sam
+
+  # Generate euclidean distance matrix
+  # distMat <- as.matrix(stats::dist(mergeSet,method = "euclidean"))
+  distMat <- matrix(apply(mergeSet,1,crossprod),
+                    nrow = len.mge, ncol = len.mge)
+  distMat <- distMat + t(distMat) - 2*tcrossprod(mergeSet)
+
   # Generate Single-Linkage distance vector
   singleLinkageDist <- apply(distMat[(len.org+1):(len.org+len.sam),1:len.org],2,min)
 
@@ -320,7 +326,7 @@ getSnen <- function(som.info, control){
 }
 
 
-#' @title DSAM - Time-consecutive algorithm
+#' @title 'DSAM' - Time-consecutive algorithm
 #' @description
 #' This function selects a time-consecutive data from the original data set as the calibration (training and test) subset, and the remaining data is taken as the evaluation subset.
 #'
@@ -394,7 +400,7 @@ remainUnsample <- function(X, Y){
 }
 
 
-#' @title DSAM - SS algorithm
+#' @title 'DSAM' - SS algorithm
 #' @description
 #' The systematic stratified (SS) is a semi-deterministic method, with details given in Zheng et al. (2018).
 #'
@@ -436,13 +442,15 @@ SS <- function(data, control){
   testKey <- SSsample(sampleKey, control$prop.Ts / Prop.calib)
   trainKey <- remainUnsample(sampleKey, testKey)
 
-  print("SS sampling complete!")
+  if(control$showTrace){
+    message("SS sampling complete!")
+  }
   return(list(Train = data[trainKey,], Test = data[testKey,],
               Validation = data[validKey,]))
 }
 
 
-#' @title DSAM - SBSS.P algorithm
+#' @title 'DSAM' - SBSS.P algorithm
 #' @description
 #' SBSS.P algorithm is a stochastic algorithm. It obtains data subsets through uniform sampling in each neuron after clustering through SOM neural network, with details given in May et al. (2010).
 #'
@@ -474,7 +482,9 @@ SBSS.P <- function(data, control){
 
   # Sampling
   trainSet <- testSet <- ValidSet <- c()
-  print(paste("Total neuron:", som.info$neuron.num))
+  if(control$showTrace){
+    message("Total neuron: ", som.info$neuron.num)
+  }
 
   # Create information list
   split.info <- list(
@@ -485,7 +495,9 @@ SBSS.P <- function(data, control){
 
   # Sampling from each neuron
   for(i in 1:som.info$neuron.num){
-    print(paste("sampling on neuron:",i))
+    if(control$showTrace){
+      message("sampling on neuron: ",i)
+    }
     # Sampling for training dataset
     if(length(som.info$neuron.cluster[[i]]) > sampleNum.eachNeuron$Tr[i]){
       randomSample.index <- sample(c(1:length(som.info$neuron.cluster[[i]])), sampleNum.eachNeuron$Tr[i])
@@ -502,14 +514,16 @@ SBSS.P <- function(data, control){
     split.info$validKey <- c(split.info$validKey, som.info$neuron.cluster[[i]])
     som.info$neuron.cluster[[i]] <- NA
   }
-  print("SBSS.P sampling complete!")
+  if(control$showTrace){
+    message("SBSS.P sampling complete!")
+  }
   return(list(Train = data[split.info$trainKey,], Test = data[split.info$testKey,],
               Validation = data[split.info$validKey,]))
 
 }
 
 
-#' @title DSAM - DUPLEX algorithm
+#' @title 'DSAM' - DUPLEX algorithm
 #' @description
 #' The deterministic DUPLEX algorithm, with details given in Chen et al. (2022).
 #'
@@ -540,20 +554,25 @@ DUPLEX <- function(data,control){
   )
 
   # Step1: initial sampling
-  print("Start the initial sampling...")
+  if(control$showTrace){
+    message("Start the initial sampling...")
+  }
   if(num.train > 0)
     split.info = DP.initialSample(split.info,"trainKey")
   if(num.test > 0)
     split.info = DP.initialSample(split.info,"testKey")
   if(num.valid > 0)
     split.info = DP.initialSample(split.info,"validKey")
-  print("Initial sampling successfully!")
+  if(control$showTrace){
+    message("Initial sampling successfully!")
+    message("Start the loop sampling...")
+  }
 
   # Step2: sampling data through a cyclic sampling pool
-  print("Start the loop sampling...")
-
   while(length(split.info$index) > 0){
-    print(paste("Remaining unsampled data:",length(split.info$index)))
+    if(control$showTrace){
+      message("Remaining unsampled data: ",length(split.info$index))
+    }
     if(length(split.info$trainKey) < num.train)
       split.info = DP.reSample(split.info,"trainKey")
     if(length(split.info$testKey) < num.test)
@@ -563,21 +582,22 @@ DUPLEX <- function(data,control){
     # Check full
     check.res = checkFull(split.info, num.train, num.test, num.valid)
     if(check.res$signal){ # The stop signal is TRUE
+      if(control$showTrace){
+        message("Two of the datasets are full, and all remaining data is sampled to the other dataset")
+      }
       split.info = check.res$ini.info
-      print("Two of the datasets are full, and all remaining data is sampled to the other dataset")
       break;
     }
   }
-
-  print("DUPLEX sampling complete!")
+  if(control$showTrace){
+    message("DUPLEX sampling complete!")
+  }
   return(list(Train = data[split.info$trainKey,], Test = data[split.info$testKey,],
               Validation = data[split.info$validKey,]))
-
-
 }
 
 
-#' @title DSAM - MDUPLEX algorithm
+#' @title 'DSAM' - MDUPLEX algorithm
 #' @description
 #' This is a modified MDUPLEX algorithm, which is also deterministic, with details given in Zheng et al. (2022).
 #'
@@ -622,22 +642,28 @@ MDUPLEX <- function(data,control){
   )
 
   # Step1: initial sampling
-  print("Start the initial sampling...")
+  if(control$showTrace){
+    message("Start the initial sampling...")
+  }
   if(num.train > 0)
     split.info = DP.initialSample(split.info,"trainKey")
   if(num.test > 0)
     split.info = DP.initialSample(split.info,"testKey")
   if(num.valid > 0)
     split.info = DP.initialSample(split.info,"validKey")
-  print("Initial sampling successfully!")
+  if(control$showTrace){
+    message("Initial sampling successfully!")
+    message("Start the loop sampling...")
+  }
 
   # Step2: sampling data through a cyclic sampling pool
-  print("Start the loop sampling...")
   while (length(split.info$index)>0) {
     trainSize.cnt = samplingPool$trainSize
     testSize.cnt = samplingPool$testSize
     validSize.cnt = samplingPool$validSize
-    print(paste("Remaining unsampled data:",length(split.info$index)))
+    if(control$showTrace){
+      message("Remaining unsampled data: ",length(split.info$index))
+    }
     while(TRUE){
       stopSignal = TRUE
       if(trainSize.cnt!=0 & length(split.info$trainKey) < num.train){
@@ -659,13 +685,15 @@ MDUPLEX <- function(data,control){
         break
     }
   }
-  print("MDUPLEX sampling complete!")
+  if(control$showTrace){
+    message("MDUPLEX sampling complete!")
+  }
   return(list(Train = data[split.info$trainKey,], Test = data[split.info$testKey,],
               Validation = data[split.info$validKey,]))
 }
 
 
-#' @title DSAM - SOMPLEX algorithm
+#' @title 'DSAM' - SOMPLEX algorithm
 #' @description
 #' SOMPLEX algorithm is a stochastic algorithm, with details given in Chen et al. (2022) and Zheng et al. (2023)
 #'
@@ -697,7 +725,9 @@ SOMPLEX <- function(data, control){
 
   # Sampling
   trainSet <- testSet <- ValidSet <- c()
-  print(paste("Total neuron:", som.info$neuron.num))
+  if(control$showTrace){
+    message("Total neuron: ", som.info$neuron.num)
+  }
   for(i in 1:som.info$neuron.num){
     # Create information list
     split.info <- list(
@@ -707,7 +737,9 @@ SOMPLEX <- function(data, control){
       testKey = c(),
       validKey = c()
     )
-    print(paste("sampling on neuron:",i))
+    if(control$showTrace){
+      message("sampling on neuron: ",i)
+    }
     if(sampleNum.eachNeuron$Tr[i] > 0)
       split.info = DP.initialSample(split.info,"trainKey")
     if(sampleNum.eachNeuron$Ts[i] > 0)
@@ -727,14 +759,16 @@ SOMPLEX <- function(data, control){
     testSet = c(testSet, split.info$testKey)
     ValidSet = c(ValidSet, split.info$validKey)
   }
-  print("SOMPLEX sampling complete!")
+  if(control$showTrace){
+    message("SOMPLEX sampling complete!")
+  }
   return(list(Train = data[trainSet,], Test = data[testSet,], Validation = data[ValidSet,]))
 }
 
 
 #' @title Main function of data splitting algorithm
 #' @description
-#' DSAM interface function: The user needs to provide a parameter list before data-splitting.
+#' 'DSAM' interface function: The user needs to provide a parameter list before data-splitting.
 #' These parameters have default values, with details given in the \code{\link{par.default}} function.
 #' Conditioned on the parameter list, this function carries out the data-splitting based on the algorithm specified by the user.
 #' The available algorithms include the traditional time-consecutive method (TIMECON), DUPLEX, MDUPLEX SOMPLEX, SBSS.P, SS.
@@ -764,13 +798,13 @@ SOMPLEX <- function(data, control){
 #'
 #' @examples
 #' data("DSAM_test_smallData")
-#' result = dataSplit(DSAM_test_smallData)
+#' res.sml = dataSplit(DSAM_test_smallData)
 #'
 #' data("DSAM_test_modData")
-#' result = dataSplit(DSAM_test_modData, list(sel.alg = "SBSS.P"))
+#' res.mod = dataSplit(DSAM_test_modData, list(sel.alg = "SBSS.P"))
 #'
 #' data("DSAM_test_largeData")
-#' result = dataSplit(DSAM_test_largeData, list(sel.alg = "SOMPLEX"))
+#' res.lag = dataSplit(DSAM_test_largeData, list(sel.alg = "SOMPLEX"))
 #'
 dataSplit <- function(data,control = list(),...){
   # Check data format

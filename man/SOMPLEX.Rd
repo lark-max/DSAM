@@ -2,7 +2,7 @@
 % Please edit documentation in R/DSAM.R
 \name{SOMPLEX}
 \alias{SOMPLEX}
-\title{DSAM - SOMPLEX algorithm}
+\title{'DSAM' - SOMPLEX algorithm}
 \usage{
 SOMPLEX(data, control)
 }

@@ -99,7 +99,7 @@ Vector type: When sel.alg = "TIMECON", the program will select a continuous time
 Boolean variable that determines whether the data subsets need to be output or not. The default is FALSE.
 
 `showTrace` 
-evel of user feedback. The default is FALSE.
+level of user feedback. The default is FALSE.
 ```
 
 ## Example

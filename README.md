@@ -11,25 +11,30 @@ characteristics. <!-- badges: end -->
 
 ## Installation
 
-There are two ways to install this package in Rstudio on your PC:
+There are three ways to install this package in Rstudio on your PC:
 
-Way 1:  
+Way 1:
+Download and install directly from CRAN:
+``` r
+install.packages("DSAM")
+```
+
+
+Way 2:  
 Firstly ensure that you have installed the package `devtools`:
 
 ``` r
 install.packages("devtools")
 ```
-
 Then you can install the package like so:
 
 ``` r
 devtools::install_github("lark-max/DSAM")
 ```
 
-Way 2:  
+Way 3:  
 You can download the zip package provided in the `release` page, and
 install the package by hand:
-
 ``` r
 install.packages("DSAM_1.0.0.tar.gz",repos = NULL,type = "source")
 ```

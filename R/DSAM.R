@@ -222,7 +222,7 @@ DP.reSample <- function(split.info, choice){
 
   # Generate euclidean distance matrix
   # distMat <- as.matrix(stats::dist(mergeSet,method = "euclidean"))
-  # The following codes calculate the Euclidean distance faster
+  # More efficient calculation of Euclidean distance matrix
   distMat <- matrix(apply(mergeSet,1,crossprod),
                     nrow = len.mge, ncol = len.mge)
   distMat <- distMat + t(distMat) - 2*tcrossprod(mergeSet)

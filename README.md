@@ -11,7 +11,7 @@ characteristics. <!-- badges: end -->
 
 ## Installation
 
-There are two ways to install this package in Rstudio on your PC:
+There are several ways to install this package:
 
 Way 1:  
 Download and install directly from CRAN:
@@ -21,7 +21,8 @@ install.packages("DSAM")
 ```
 
 Way 2:  
-Firstly ensure that you have installed the package `devtools`:
+Download and install from github: Firstly ensure that you have installed
+the package `devtools`:
 
 ``` r
 install.packages("devtools")
@@ -38,7 +39,7 @@ You can download the zip package provided in the `release` page, and
 install the package by hand:
 
 ``` r
-install.packages("DSAM_1.0.0.tar.gz",repos = NULL,type = "source")
+install.packages("DSAM_1.0.x.tar.gz",repos = NULL,type = "source")
 ```
 
 After installation, You can then load the package by:

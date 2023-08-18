@@ -54,12 +54,12 @@ par.default <- function(){
 #'
 getAUC <- function(data1, data2){
   # Check data format
-  if(!mode(data1) %in% c("numeric","matrix","data.frame")){
+  if(!is.matrix(data1) & !is.data.frame(data1) & !is.numeric(data1)){
     stop(
       paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data1)),"!",sep="")
     )
   }
-  if(!mode(data2) %in% c("numeric","matrix","data.frame")){
+  if(!is.matrix(data2) & !is.data.frame(data2) & !is.numeric(data2)){
     stop(
       paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data2)),"!",sep="")
     )
@@ -77,16 +77,12 @@ getAUC <- function(data1, data2){
     )
   }
 
-  # Force convert data type to matrix when the type is numeric
-  if(mode(data1) %in% "numeric"){
-    data1 <- as.matrix(data1)
-  }
-  if(mode(data2) %in% "numeric"){
-    data2 <- as.matrix(data2)
-  }
+  # Force convert data type to matrix
+  data1 <- as.matrix(data1)
+  data2 <- as.matrix(data2)
 
   # Check the dimensions are consistent between the two input datasets
-  if(ncol(data1) != ncol(data2)){
+  if(dim(data1)[2] != dim(data2)[2]){
     stop(
       "[Error]:Inconsistent dimensions of the two input datasets!"
     )
@@ -185,6 +181,11 @@ DP.initialSample <- function(split.info, choice){
   distMat <- as.matrix(stats::dist(split.info$data[split.info$index,],method = "euclidean"))
   max.points <- which(distMat == max(distMat), arr.ind = T)
 
+  # When the maximum distance is 0, you can choose any two data points
+  if(max.points[1,1] == max.points[1,2]){
+    max.points[1,] = sample(1:nrow(distMat), 2)
+  }
+
   eval(parse(text = paste("split.info$",choice,"=c(split.info$",choice,
                           ",split.info$index[c(max.points[1,1],max.points[1,2])])",sep="")))
   eval(parse(text = paste("split.info$index = split.info$index[c(-max.points[1,1],-max.points[1,2])]")))
@@ -221,6 +222,7 @@ DP.reSample <- function(split.info, choice){
 
   # Generate euclidean distance matrix
   # distMat <- as.matrix(stats::dist(mergeSet,method = "euclidean"))
+  # The following codes calculate the Euclidean distance faster
   distMat <- matrix(apply(mergeSet,1,crossprod),
                     nrow = len.mge, ncol = len.mge)
   distMat <- distMat + t(distMat) - 2*tcrossprod(mergeSet)

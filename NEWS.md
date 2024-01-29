@@ -1,3 +1,9 @@
+# DSAM 1.0.2
+
+* Added getMAX(), getMin(), getMean() functions.
+* Fixed the unexpected situation in MDUPLEX and SSBS.P algorithms when the user set the splitting ratio to 0.
+
+
 # DSAM 1.0.1  
 
 * Fixed the bug in the getAUC() function.  

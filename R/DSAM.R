@@ -123,6 +123,84 @@ getAUC <- function(data1, data2){
 }
 
 
+#' @title Get the maximum of the output column from the original data set
+#' @description
+#' This function return the maximum of runoff(output columu) for users.
+#'
+#' @param data The original data set, the data type must be numeric, matrix or Data.frame.
+#'
+#' @return Return the maximum value of the output column.
+#'
+#' @export
+#'
+getMax <- function(data){
+  # Check data format
+  if(!is.matrix(data) & !is.data.frame(data) & !is.numeric(data)){
+    stop(
+      paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data)),"!",sep="")
+    )
+  }
+  if(is.matrix(data) | is.data.frame(data))
+    output.column <- data[,ncol(data)]
+  else
+    output.column <- data
+  maximum <- max(output.column, na.rm=T)
+  return(maximum)
+}
+
+
+#' @title Get the minimum of the output column from the original data set
+#' @description
+#' This function return the minimum of runoff(output columu) for users.
+#'
+#' @param data The original data set, the data type must be numeric, matrix or Data.frame.
+#'
+#' @return Return the minimum value of the output column.
+#'
+#' @export
+#'
+getMin <- function(data){
+  if(!is.matrix(data) & !is.data.frame(data) & !is.numeric(data)){
+    stop(
+      paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data)),"!",sep="")
+    )
+  }
+  if(is.matrix(data) | is.data.frame(data))
+    output.column <- data[,ncol(data)]
+  else
+    output.column <- data
+  minimum <- min(output.column, na.rm=T)
+  return(minimum)
+}
+
+
+#' @title Get the mean and  standard deviation of the output column from the original data set
+#' @description
+#' This function return the mean and  standard deviation of runoff(output columu) for users.
+#'
+#' @param data The original data set, the data type must be numeric, matrix or Data.frame.
+#'
+#' @return Return a list with mean value and standard deviation.
+#'
+#' @importFrom stats sd
+#' @export
+#'
+getMean <- function(data){
+  if(!is.matrix(data) & !is.data.frame(data) & !is.numeric(data)){
+    stop(
+      paste("[Error]:Invalid input data format for the parameter called: ",deparse(substitute(data)),"!",sep="")
+    )
+  }
+  if(is.matrix(data) | is.data.frame(data))
+    output.column <- data[,ncol(data)]
+  else
+    output.column <- data
+  meanVal <- mean(output.column, na.rm=T)
+  stdVal <- sd(output.column, na.rm=T)
+  return(list(mean = meanVal, std = stdVal))
+}
+
+
 #' @title Select specific split data
 #' @description
 #' Built-in function: This function decides whether to process the input dataset according to the parameter \code{include.inp}. If TRUE, this function removes Column 1 of the input dataset; otherwise, it returns the Column N of the data set.
@@ -363,6 +441,8 @@ TIMECON <- function(data, control){
 #' @return Return a vector containing the subscript of the sampled data points.
 #'
 SSsample <- function(index, prop){
+  if(prop == 0)
+    prop = 1e-6
   sampleVec <- c()
   interval <- 1/prop
   loc <- stats::runif(1,0,32767) %% ceiling(interval)
@@ -501,13 +581,13 @@ SBSS.P <- function(data, control){
       message("sampling on neuron: ",i)
     }
     # Sampling for training dataset
-    if(length(som.info$neuron.cluster[[i]]) > sampleNum.eachNeuron$Tr[i]){
+    if(sampleNum.eachNeuron$Tr[i] != 0 & length(som.info$neuron.cluster[[i]]) > sampleNum.eachNeuron$Tr[i]){
       randomSample.index <- sample(c(1:length(som.info$neuron.cluster[[i]])), sampleNum.eachNeuron$Tr[i])
       split.info$trainKey <- c(split.info$trainKey, som.info$neuron.cluster[[i]][randomSample.index])
       som.info$neuron.cluster[[i]] = som.info$neuron.cluster[[i]][-randomSample.index]
     }
     # Sampling for test dataset
-    if(length(som.info$neuron.cluster[[i]]) > sampleNum.eachNeuron$Ts[i]){
+    if(sampleNum.eachNeuron$Ts[i] != 0 & length(som.info$neuron.cluster[[i]]) > sampleNum.eachNeuron$Ts[i]){
       randomSample.index <- sample(c(1:length(som.info$neuron.cluster[[i]])), sampleNum.eachNeuron$Ts[i])
       split.info$testKey <- c(split.info$testKey, som.info$neuron.cluster[[i]][randomSample.index])
       som.info$neuron.cluster[[i]] = som.info$neuron.cluster[[i]][-randomSample.index]
@@ -626,12 +706,13 @@ MDUPLEX <- function(data,control){
   select.data.std = standardise(select.data)
 
   # Parameters of the basic sampling pool
-  poolSize = round(1/min(control$prop.Tr, control$prop.Ts,
-                         1-(control$prop.Tr+control$prop.Ts)))
+  vec.prop <- c(control$prop.Tr, control$prop.Ts, 1-control$prop.Tr-control$prop.Ts)
+  poolSize = round(1/min(vec.prop[vec.prop>0]))
+
   samplingPool <- list(
-    trainSize = round(poolSize * control$prop.Tr),
-    testSize = round(poolSize * control$prop.Ts),
-    validSize = round(poolSize * (1-control$prop.Tr-control$prop.Ts))
+    trainSize = round(poolSize * vec.prop[1]),
+    testSize = round(poolSize * vec.prop[2]),
+    validSize = round(poolSize * vec.prop[3])
   )
 
   # Create information list
